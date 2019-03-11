@@ -33,7 +33,7 @@ class SpringScstAppStartersBuildMaker implements JdkConfig, TestPublisher,
                 boolean dockerHubPush = true, boolean githubPushTrigger = true,
                 boolean docsBuild = false, boolean isRelease = false,
                 String releaseType = "") {
-        
+
         if (branchToBuild.equals("1.3.x")) {
             if (project.equals("tensorflow") ||
                     project.equals(("python")) ||
