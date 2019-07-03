@@ -21,6 +21,8 @@ class SpringScstAppStartersBuildMaker implements JdkConfig, TestPublisher,
 
     String branchToBuild = "master"
 
+    String jdkVersion = jdk8()
+
     SpringScstAppStartersBuildMaker(DslFactory dsl, String organization,
                                     String project, String branchToBuild) {
         this.dsl = dsl
