@@ -20,7 +20,7 @@ class AllScstAppStarterJobs {
                                                     'redis-pubsub', 'tcp', 'httpclient', 'cassandra']
 
     public static final List<String> PHASE4_JOBS = ['twitter', 'aggregator', 'mqtt', 'rabbit', 'gemfire',
-                                                    'scriptable-transform', 'ftp', 'file', ]
+                                                    'scriptable-transform', 'ftp', 'file', 'cdc-debezium']
 
     public static final List<String> PHASE5_JOBS = ['aws-s3', 'sftp', 'tensorflow', 'mongodb', 'hdfs', 'jdbc', 'python', 'analytics']
 
