@@ -77,6 +77,20 @@ class SpringScstAppStartersPhasedBuildMaker implements SpringScstAppStarterJobs 
                         counter++;
                     }
                 }
+                else if (branchToBuild.equals("2.1.x")) {
+                    (AllScstAppStarterJobs.DARWIN_PHASES).each { List<String> ph ->
+                        phase("app-starters-ci-group-${counter}", 'COMPLETED') {
+                            ph.each {
+                                String projectName ->
+                                    String prefixedProjectName = prefixJob(projectName)
+                                    phaseJob("${prefixedProjectName}-master-ci".toString()) {
+                                        currentJobParameters()
+                                    }
+                            }
+                        }
+                        counter++;
+                    }
+                }
                 else {
                     (AllScstAppStarterJobs.PHASES).each { List<String> ph ->
                         phase("app-starters-ci-group-${counter}", 'COMPLETED') {
