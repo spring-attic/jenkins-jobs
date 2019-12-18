@@ -125,8 +125,12 @@ class SpringScstAppStartersPhasedBuildMaker implements SpringScstAppStarterJobs 
                         String prefixedProjectName = prefixJob("app-starters-release")
                         if (branchToBuild.equals("1.3.x")) {
                             branchToBuild = "Celsius"
-                        } else if (branchToBuild.equals("2.0.x")) {
+                        }
+                        else if (branchToBuild.equals("2.0.x")) {
                             branchToBuild = "Darwin"
+                        }
+                        else if (branchToBuild.equals("2.1.x")) {
+                            branchToBuild = "Einstein"
                         }
                         phaseJob("${prefixedProjectName}-${branchToBuild}-ci".toString()) {
                             currentJobParameters()
