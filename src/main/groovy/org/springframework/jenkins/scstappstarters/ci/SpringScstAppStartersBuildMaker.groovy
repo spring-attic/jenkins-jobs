@@ -50,6 +50,11 @@ class SpringScstAppStartersBuildMaker implements JdkConfig, TestPublisher,
                 branchToBuild = "Darwin"
             }
         }
+        else if(branchToBuild.equals("2.1.x")) {
+            if (project.equals("app-starters-release")) {
+                branchToBuild = "Einstein"
+            }
+        }
 
         dsl.job("${prefixJob(project)}-${branchToBuild}-ci") {
             if (githubPushTrigger && !isRelease) {

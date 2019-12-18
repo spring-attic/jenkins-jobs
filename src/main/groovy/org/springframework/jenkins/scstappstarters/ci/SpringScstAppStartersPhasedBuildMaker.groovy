@@ -7,11 +7,11 @@ import org.springframework.jenkins.scstappstarters.common.SpringScstAppStarterJo
 /**
  * @author Soby Chacko
  */
-class SpringScstAppStatersPhasedBuildMaker implements SpringScstAppStarterJobs {
+class SpringScstAppStartersPhasedBuildMaker implements SpringScstAppStarterJobs {
 
     private final DslFactory dsl
 
-    SpringScstAppStatersPhasedBuildMaker(DslFactory dsl) {
+    SpringScstAppStartersPhasedBuildMaker(DslFactory dsl) {
         this.dsl = dsl
     }
 
@@ -162,12 +162,20 @@ class SpringScstAppStatersPhasedBuildMaker implements SpringScstAppStarterJobs {
                     new SpringScstAppStartersBuildMaker(dsl, "spring-cloud-stream-app-starters", it, branchToBuild).deploy(true, true,
                             true, true, false, isRelease, releaseType)
                 }
-            } else if (branchToBuild.equals("2.0.x")) {
+            }
+            else if (branchToBuild.equals("2.0.x")) {
                 AllScstAppStarterJobs.DARWIN_ALL_JOBS.each {
                     new SpringScstAppStartersBuildMaker(dsl, "spring-cloud-stream-app-starters", it, branchToBuild).deploy(true, true,
                             true, true, false, isRelease, releaseType)
                 }
-            } else { // master branch
+            }
+            else if (branchToBuild.equals("2.1.x")) {
+                AllScstAppStarterJobs.ALL_JOBS.each {
+                    new SpringScstAppStartersBuildMaker(dsl, "spring-cloud-stream-app-starters", it, "master").deploy(true, true,
+                            true, true, false, isRelease, releaseType)
+                }
+            }
+            else { // master branch
                 AllScstAppStarterJobs.ALL_JOBS.each {
                     new SpringScstAppStartersBuildMaker(dsl, "spring-cloud-stream-app-starters", it, branchToBuild).deploy(true, true,
                             true, true, false, isRelease, releaseType)
