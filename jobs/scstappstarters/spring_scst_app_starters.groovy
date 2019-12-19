@@ -8,7 +8,7 @@ DslFactory dsl = this
 String releaseType = "" // possible values are - "", milestone or ga
 
 // Master CI
-//new SpringScstAppStartersPhasedBuildMaker(dsl).build(false, "")
+new SpringScstAppStartersPhasedBuildMaker(dsl).build(true, "milestone")
 
 // 1.3.x CI
 new SpringScstAppStartersPhasedBuildMaker(dsl).build(false, "", "1.3.x")
