@@ -9,7 +9,7 @@ trait SpringScstAppStarterJobs extends BuildAndDeploy {
 
 	@Override
 	String projectSuffix() {
-		return 'spring-scst-app-starters'
+		return 'spring-scst-apps'
 	}
 
 	/**

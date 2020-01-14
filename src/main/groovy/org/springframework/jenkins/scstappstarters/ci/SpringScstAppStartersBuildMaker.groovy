@@ -11,6 +11,7 @@ import static org.springframework.jenkins.common.job.Artifactory.artifactoryMave
 import static org.springframework.jenkins.common.job.Artifactory.artifactoryMavenBuild
 /**
  * @author Marcin Grzejszczak
+ * @author Soby Chacko
  */
 class SpringScstAppStartersBuildMaker implements JdkConfig, TestPublisher,
         Cron, SpringScstAppStarterJobs, Maven {
@@ -18,15 +19,17 @@ class SpringScstAppStartersBuildMaker implements JdkConfig, TestPublisher,
     private final DslFactory dsl
     final String organization
     final String project
+    final String repository
 
     String branchToBuild = "master"
 
     String jdkVersion = jdk8()
 
-    SpringScstAppStartersBuildMaker(DslFactory dsl, String organization,
+    SpringScstAppStartersBuildMaker(DslFactory dsl, String organization, String repository,
                                     String project, String branchToBuild) {
         this.dsl = dsl
         this.organization = organization
+        this.repository = repository
         this.project = project
         this.branchToBuild = branchToBuild
     }
@@ -34,27 +37,7 @@ class SpringScstAppStartersBuildMaker implements JdkConfig, TestPublisher,
     void deploy(boolean appsBuild = true, boolean checkTests = true,
                 boolean dockerHubPush = true, boolean githubPushTrigger = true,
                 boolean docsBuild = false, boolean isRelease = false,
-                String releaseType = "") {
-
-        if (branchToBuild.equals("1.3.x")) {
-            if (project.equals("tensorflow") ||
-                    project.equals(("python")) ||
-                    project.equals("mqtt")) {
-                branchToBuild = "1.0.x"
-            } else if (project.equals("app-starters-release")) {
-                branchToBuild = "Celsius"
-            }
-        }
-        else if(branchToBuild.equals("2.0.x")) {
-            if (project.equals("app-starters-release")) {
-                branchToBuild = "Darwin"
-            }
-        }
-        else if(branchToBuild.equals("2.1.x")) {
-            if (project.equals("app-starters-release")) {
-                branchToBuild = "Einstein"
-            }
-        }
+                String releaseType = "", String cdToApps = "") {
 
         dsl.job("${prefixJob(project)}-${branchToBuild}-ci") {
             if (githubPushTrigger && !isRelease) {
@@ -65,7 +48,7 @@ class SpringScstAppStartersBuildMaker implements JdkConfig, TestPublisher,
             scm {
                 git {
                     remote {
-                        url "https://github.com/${organization}/${project}"
+                        url "https://github.com/${organization}/${repository}"
                         branch branchToBuild
                     }
                 }
@@ -94,45 +77,45 @@ class SpringScstAppStartersBuildMaker implements JdkConfig, TestPublisher,
                     shell(removeAppsDirectory())
                 }
                 if (isRelease) {
-                    if (docsBuild) {
-                        shell(cleanAndInstall(isRelease, releaseType))
-                    }
-                    else if (appsBuild) {
-                        shell(cleanAndDeployWithGenerateApps(isRelease, releaseType))
-                    }
-                    else {
-                        shell(cleanAndDeploy(isRelease, releaseType))
-                    }
+//                    if (docsBuild) {
+//                        shell(cleanAndInstall(isRelease, releaseType))
+//                    }
+//                    else if (appsBuild) {
+//                        shell(cleanAndDeployWithGenerateApps(isRelease, releaseType))
+//                    }
+//                    else {
+//                        shell(cleanAndDeploy(isRelease, releaseType))
+//                    }
                 }
                 else {
                     maven {
                         mavenInstallation(maven35())
                         if (docsBuild) {
-                            goals('clean install -U -Pspring')
+                            //goals('clean install -U -Pspring')
                         }
                         else if (appsBuild) {
-                            goals('clean deploy -U -Pspring -PgenerateApps')
+                            //goals('clean deploy -U -Pspring -PgenerateApps')
                         }
                         else {
-                            goals('clean deploy -U -Pspring')
+                            //goals('clean deploy -U -Pspring')
                         }
                     }
                 }
 
                 if (appsBuild) {
                     if (isRelease && releaseType != null && !releaseType.equals("milestone")) {
-                        shell("""set -e
-                        #!/bin/bash -x
-                        export MAVEN_PATH=${mavenBin()}
-                        ${setupGitCredentials()}
-                        echo "Building apps"
-                        cd apps
-                        set +x
-                        ../mvnw clean deploy -Pspring -Dgpg.secretKeyring="\$${gpgSecRing()}" -Dgpg.publicKeyring="\$${
-                            gpgPubRing()}" -Dgpg.passphrase="\$${gpgPassphrase()}" -DSONATYPE_USER="\$${sonatypeUser()}" -DSONATYPE_PASSWORD="\$${sonatypePassword()}" -Pcentral -U
-                        set -x
-                        ${cleanGitCredentials()}
-                        """)
+//                        shell("""set -e
+//                        #!/bin/bash -x
+//                        export MAVEN_PATH=${mavenBin()}
+//                        ${setupGitCredentials()}
+//                        echo "Building apps"
+//                        cd apps
+//                        set +x
+//                        ../mvnw clean deploy -Pspring -Dgpg.secretKeyring="\$${gpgSecRing()}" -Dgpg.publicKeyring="\$${
+//                            gpgPubRing()}" -Dgpg.passphrase="\$${gpgPassphrase()}" -DSONATYPE_USER="\$${sonatypeUser()}" -DSONATYPE_PASSWORD="\$${sonatypePassword()}" -Pcentral -U
+//                        set -x
+//                        ${cleanGitCredentials()}
+//                        """)
                     }
                     else {
                         shell("""set -e
@@ -140,6 +123,8 @@ class SpringScstAppStartersBuildMaker implements JdkConfig, TestPublisher,
                         export MAVEN_PATH=${mavenBin()}
                         ${setupGitCredentials()}
                         echo "Building apps"
+                        cd ${cdToApps}
+                        ./mvnw clean deploy -U
                         cd apps
                         ../mvnw clean deploy -U
                         ${cleanGitCredentials()}
@@ -172,8 +157,8 @@ class SpringScstAppStartersBuildMaker implements JdkConfig, TestPublisher,
 //                        else {
 //                            goals('clean install -U -Pfull -Pspring')
 //                        }
-                        mavenVersion(maven35())
-                        goals('clean install -U -Pfull -Pspring')
+//                        mavenVersion(maven35())
+//                        goals('clean install -U -Pfull -Pspring')
                     }
                     artifactoryMaven3Configurator(it as Node) {
                         if (isRelease && releaseType != null && releaseType.equals("milestone")) {
@@ -189,9 +174,9 @@ class SpringScstAppStartersBuildMaker implements JdkConfig, TestPublisher,
 
             publishers {
                 //mailer('scdf-ci@pivotal.io', true, true)
-                if (checkTests) {
-                    archiveJunit mavenJUnitResults()
-                }
+//                if (checkTests) {
+//                    archiveJunit mavenJUnitResults()
+//                }
             }
         }
     }

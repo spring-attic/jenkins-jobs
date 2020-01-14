@@ -22,24 +22,6 @@ dsl.nestedView('SpringScstAppStarters') {
 			}
 			columns defaultColumns()
 		}
-		listView('1.3.x-CI') {
-			jobs {
-				regex('spring-scst-app-starters.*1.3.x-ci')
-			}
-			columns defaultColumns()
-		}
-		listView('CI') {
-			jobs {
-				regex('spring-scst-app-starters.*-ci')
-			}
-			columns defaultColumns()
-		}
-		listView('All Spring App Starters') {
-			jobs {
-				regex('spring-scst-app-starters.*')
-			}
-			columns defaultColumns()
-		}
 	}
 }
 
