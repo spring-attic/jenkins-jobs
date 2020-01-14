@@ -124,6 +124,7 @@ class SpringScstAppStartersBuildMaker implements JdkConfig, TestPublisher,
                         ${setupGitCredentials()}
                         echo "Building apps"
                         cd ${cdToApps}
+                        rm -rf apps
                         ./mvnw clean deploy -U
                         cd apps
                         ../mvnw clean deploy -U
@@ -137,6 +138,7 @@ class SpringScstAppStartersBuildMaker implements JdkConfig, TestPublisher,
 					export MAVEN_PATH=${mavenBin()}
 					${setupGitCredentials()}
 					echo "Pushing to Docker Hub"
+                    cd ${cdToApps}
                     cd apps
                     set +x
                     ../mvnw -U --batch-mode clean package docker:build docker:push -DskipTests -Ddocker.username="\$${dockerHubUserNameEnvVar()}" -Ddocker.password="\$${dockerHubPasswordEnvVar()}"
