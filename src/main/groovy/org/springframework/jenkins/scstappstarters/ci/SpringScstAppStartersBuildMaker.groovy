@@ -97,7 +97,7 @@ class SpringScstAppStartersBuildMaker implements JdkConfig, TestPublisher,
                             //goals('clean deploy -U -Pspring -PgenerateApps')
                         }
                         else {
-                            //goals('clean deploy -U -Pspring')
+                            goals('clean deploy -U -Pspring')
                         }
                     }
                 }
