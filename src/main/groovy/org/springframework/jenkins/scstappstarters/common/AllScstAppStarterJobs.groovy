@@ -24,7 +24,8 @@ class AllScstAppStarterJobs {
 //
 //    public static final List<String> PHASE5_JOBS = ['aws-s3', 'sftp', 'tensorflow', 'mongodb', 'hdfs', 'jdbc', 'python', 'analytics']
 
-    public static final List<List<String>> ALL_JOBS = [['jdbc-source'], ['http-source'], ['splitter-processor'], ['rabbit-sink']]
+    public static final List<String> PHASE1_KEYS = ['jdbc-source', 'http-source', 'splitter-processor', 'rabbit-sink']
+    public static final List<List<String>> ALL_JOBS = [PHASE1_KEYS]
 //            PHASE1_JOBS + PHASE2_JOBS +
 //                    PHASE3_JOBS + PHASE4_JOBS +
 //                    PHASE5_JOBS
