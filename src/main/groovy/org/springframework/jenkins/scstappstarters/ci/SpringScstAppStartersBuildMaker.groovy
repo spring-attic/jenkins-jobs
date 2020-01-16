@@ -130,17 +130,17 @@ class SpringScstAppStartersBuildMaker implements JdkConfig, TestPublisher,
                         ${setupGitCredentials()}
                         echo "Building apps"
                         cd ${cdToApps}
-                        if [ -e docker-compose.yml ]
+                        if [ -e docker-compose.sh ]
                         then
-                            docker-compose up -d
+                            ./docker-compose.sh
                         else
                             echo "skipping docker step"
                         fi
                         rm -rf apps
                         ./mvnw clean deploy -U
-                        if [ -e docker-compose.yml ]
+                        if [ -e docker-compose.sh ]
                         then
-                            docker-compose down
+                            ./docker-compose-stop.sh
                         else
                             echo "skipping docker step"
                         fi
