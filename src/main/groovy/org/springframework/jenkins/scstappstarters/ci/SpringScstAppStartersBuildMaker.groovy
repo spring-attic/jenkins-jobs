@@ -132,15 +132,15 @@ class SpringScstAppStartersBuildMaker implements JdkConfig, TestPublisher,
                         fi
                         rm -rf apps
                         ./mvnw clean deploy -U
-                        cd apps
-                        ../mvnw clean deploy -U
-                        ${cleanGitCredentials()}
                         if [ -e docker-compose.yml ]
                         then
                             docker-compose down
                         else
                             echo "skipping docker step"
                         fi
+                        cd apps
+                        ../mvnw clean deploy -U
+                        ${cleanGitCredentials()}
                         """)
                     }
                 }
