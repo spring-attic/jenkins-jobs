@@ -170,15 +170,15 @@ class SpringScstAppStartersBuildMaker implements JdkConfig, TestPublisher,
 
                 if (docsBuild) {
                     artifactoryMavenBuild(it as Node) {
-//                        mavenVersion(maven33())
+                       // mavenVersion(maven33())
 //                        if (releaseType != null && releaseType.equals("milestone")) {
 //                            goals('clean install -U -Pfull -Pspring -Pmilestone')
 //                        }
 //                        else {
 //                            goals('clean install -U -Pfull -Pspring')
 //                        }
-//                        mavenVersion(maven35())
-//                        goals('clean install -U -Pfull -Pspring')
+                        mavenVersion(maven35())
+                        goals('clean install -U -Pfull -Pspring')
                     }
                     artifactoryMaven3Configurator(it as Node) {
                         if (isRelease && releaseType != null && releaseType.equals("milestone")) {
