@@ -128,6 +128,7 @@ class SpringScstAppStartersBuildMaker implements JdkConfig, TestPublisher,
                         then
                             docker-compose up -d
                         else
+                            echo "skipping docker step"
                         fi
                         rm -rf apps
                         ./mvnw clean deploy -U
@@ -138,6 +139,7 @@ class SpringScstAppStartersBuildMaker implements JdkConfig, TestPublisher,
                         then
                             docker-compose down
                         else
+                            echo "skipping docker step"
                         fi
                         """)
                     }
