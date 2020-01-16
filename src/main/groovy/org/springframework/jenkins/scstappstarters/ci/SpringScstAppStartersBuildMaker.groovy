@@ -138,7 +138,7 @@ class SpringScstAppStartersBuildMaker implements JdkConfig, TestPublisher,
                         fi
                         rm -rf apps
                         ./mvnw clean deploy -U
-                        if [ -e docker-compose.sh ]
+                        if [ -e docker-compose-stop.sh ]
                         then
                             ./docker-compose-stop.sh
                         else
