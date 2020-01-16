@@ -73,39 +73,11 @@ class SpringScstAppStartersBuildMaker implements JdkConfig, TestPublisher,
             }
 
             steps {
-                if (appsBuild) {
-                    //shell(removeAppsDirectory())
-                }
-                else { //core build + release train
+                if (!appsBuild) {
                     maven {
                         mavenInstallation(maven35())
                         goals('clean deploy -U -Pspring')
                     }
-                }
-                if (isRelease) {
-//                    if (docsBuild) {
-//                        shell(cleanAndInstall(isRelease, releaseType))
-//                    }
-//                    else if (appsBuild) {
-//                        shell(cleanAndDeployWithGenerateApps(isRelease, releaseType))
-//                    }
-//                    else {
-//                        shell(cleanAndDeploy(isRelease, releaseType))
-//                    }
-                }
-                else {
-//                    maven {
-//                        mavenInstallation(maven35())
-//                        if (docsBuild) {
-//                            //goals('clean install -U -Pspring')
-//                        }
-//                        else if (appsBuild) {
-//                            //goals('clean deploy -U -Pspring -PgenerateApps')
-//                        }
-//                        else {
-//                            goals('clean deploy -U -Pspring')
-//                        }
-//                    }
                 }
 
                 if (appsBuild) {
@@ -170,15 +142,13 @@ class SpringScstAppStartersBuildMaker implements JdkConfig, TestPublisher,
 
                 if (docsBuild) {
                     artifactoryMavenBuild(it as Node) {
-                       // mavenVersion(maven33())
-//                        if (releaseType != null && releaseType.equals("milestone")) {
-//                            goals('clean install -U -Pfull -Pspring -Pmilestone')
-//                        }
-//                        else {
-//                            goals('clean install -U -Pfull -Pspring')
-//                        }
                         mavenVersion(maven35())
-                        goals('clean install -U -Pfull -Pspring')
+                        if (releaseType != null && releaseType.equals("milestone")) {
+                            goals('clean install -U -Pfull -Pspring -Pmilestone')
+                        }
+                        else {
+                            goals('clean install -U -Pfull -Pspring')
+                        }
                     }
                     artifactoryMaven3Configurator(it as Node) {
                         if (isRelease && releaseType != null && releaseType.equals("milestone")) {
