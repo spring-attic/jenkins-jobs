@@ -11,7 +11,8 @@ class AllScstAppStarterJobs {
     //Removed cassandra and gpfdist from Darwin builds
 
     public static final Map<String, String> PHASE1_JOBS = ['jdbc-source':'source/jdbc-source-apps', 'http-source':'source/http-source-apps',
-                                                           'splitter-processor':'processor/splitter-processor-apps', 'rabbit-sink':'sink/rabbit-sink-apps']
+                                                           'splitter-processor':'processor/splitter-processor-apps', 'rabbit-sink':'sink/rabbit-sink-apps',
+                                                           'time-source':'source/time-source-apps', 'log-sink':'sink/log-sink-apps']
 
 //    public static final List<String> PHASE2_JOBS = ['loggregator', 'load-generator', 'mail',
 //                                                    'pmml', 'tasklaunchrequest-transform', 'triggertask', 'transform', 'websocket', 'http']
@@ -24,7 +25,7 @@ class AllScstAppStarterJobs {
 //
 //    public static final List<String> PHASE5_JOBS = ['aws-s3', 'sftp', 'tensorflow', 'mongodb', 'hdfs', 'jdbc', 'python', 'analytics']
 
-    public static final List<String> PHASE1_KEYS = ['jdbc-source', 'http-source', 'splitter-processor', 'rabbit-sink']
+    public static final List<String> PHASE1_KEYS = ['jdbc-source', 'http-source', 'splitter-processor', 'rabbit-sink', 'time-source', 'log-sink']
     public static final List<List<String>> ALL_JOBS = [PHASE1_KEYS]
 //            PHASE1_JOBS + PHASE2_JOBS +
 //                    PHASE3_JOBS + PHASE4_JOBS +
