@@ -104,7 +104,7 @@ class SpringScstAppStartersPhasedBuildMaker implements SpringScstAppStarterJobs 
 
             // master branch
             AllScstAppStarterJobs.PHASE1_JOBS.each { k,v ->
-                new SpringScstAppStartersBuildMaker(dsl, "spring-cloud-stream-app-starters", "stream-apps", "${k}", branchToBuild).deploy(true, true,
+                new SpringScstAppStartersBuildMaker(dsl, "spring-cloud-stream-app-starters", "stream-applications", "${k}", branchToBuild).deploy(true, true,
                         true, true, false, isRelease, releaseType, "${v}")
             }
 
