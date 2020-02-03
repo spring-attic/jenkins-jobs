@@ -109,7 +109,7 @@ class SpringScstAppStartersBuildMaker implements JdkConfig, TestPublisher,
                             echo "skipping docker step"
                         fi
                         rm -rf apps
-                        ./mvnw clean deploy -U
+                        ./mvnw clean package -U
                         if [ -e docker-compose-stop.sh ]
                         then
                             ./docker-compose-stop.sh
