@@ -158,7 +158,14 @@ class SpringScstAppStartersPhasedBuildMaker implements SpringScstAppStarterJobs 
                             .deploy(true, true,
                             true, false, false, isRelease, releaseType)
                 }
-            } else { //master branch
+            }
+            else if (branchToBuild.equals("2.1.x")) {
+                AllScstAppStarterJobs.ALL_JOBS.each {
+                    new SpringScstAppStartersBuildMaker(dsl, "spring-cloud-stream-app-starters", it, "master").deploy(true, true,
+                            true, false, false, isRelease, releaseType)
+                }
+            }
+            else { //master branch
                 AllScstAppStarterJobs.ALL_JOBS.each {
                     new SpringScstAppStartersBuildMaker(dsl, "spring-cloud-stream-app-starters", it, branchToBuild)
                             .deploy(true, true,
@@ -172,7 +179,8 @@ class SpringScstAppStartersPhasedBuildMaker implements SpringScstAppStarterJobs 
             }
             new SpringScstAppStartersBuildMaker(dsl, "spring-cloud-stream-app-starters", "app-starters-release", branchToBuild)
                     .deploy(false, false, false, false, true, isRelease, releaseType)
-        } else {
+        }
+        else {
             new SpringScstAppStartersBuildMaker(dsl, "spring-cloud-stream-app-starters", "core", branchToBuild)
                     .deploy(false, false, false, true, false, isRelease, releaseType)
             if (branchToBuild.equals("1.3.x")) {
