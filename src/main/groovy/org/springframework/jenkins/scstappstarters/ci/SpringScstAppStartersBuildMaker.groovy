@@ -131,7 +131,8 @@ class SpringScstAppStartersBuildMaker implements JdkConfig, TestPublisher,
                     cd ${cdToApps}
                     cd apps
                     set +x
-                    ../mvnw -U --batch-mode clean package docker:build docker:push -DskipTests -Ddocker.username="\$${dockerHubUserNameEnvVar()}" -Ddocker.password="\$${dockerHubPasswordEnvVar()}"
+                    #../mvnw -U --batch-mode clean package docker:build docker:push -DskipTests -Ddocker.username="\$${dockerHubUserNameEnvVar()}" -Ddocker.password="\$${dockerHubPasswordEnvVar()}"
+                    ../mvnw -U clean package jib:dockerBuild -DskipTests -Djib.to.auth.username="\\\$${dockerHubUserNameEnvVar()}" -Djib.to.auth.username.password="\\\$${dockerHubPasswordEnvVar()}"
 					set -x
 
 					${cleanGitCredentials()}
