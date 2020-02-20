@@ -90,30 +90,32 @@ class SpringScstAppStartersBuildMaker implements JdkConfig, TestPublisher,
                 }
                 else {
                     //maven {
+                    maven {
                         mavenInstallation(maven35())
-                        if (docsBuild) {
-                            maven {
-                                goals('clean install -U -Pspring')
-                            }
+                    }
+                    if (docsBuild) {
+                        maven {
+                            goals('clean install -U -Pspring')
                         }
-                        else if (appsBuild) {
-                            shell("""set -e
-                            #!/bin/bash -x
-                            export MAVEN_PATH=${mavenBin()}
-                            ${setupGitCredentials()}
-                            echo "Building app generator"
-                            cd ${cdToApps}
-                            rm -rf apps
-                            ./mvnw clean package -U
-                            ${cleanGitCredentials()}
-                            """)
-                            //goals('clean deploy -U -Pspring')
+                    }
+                    else if (appsBuild) {
+                        shell("""set -e
+                        #!/bin/bash -x
+                        export MAVEN_PATH=${mavenBin()}
+                        ${setupGitCredentials()}
+                        echo "Building app generator"
+                        cd ${cdToApps}
+                        rm -rf apps
+                        ./mvnw clean package -U
+                        ${cleanGitCredentials()}
+                        """)
+                        //goals('clean deploy -U -Pspring')
+                    }
+                    else {
+                        maven {
+                            goals('clean deploy -U -Pspring')
                         }
-                        else {
-                            maven {
-                                goals('clean deploy -U -Pspring')
-                            }
-                        }
+                    }
                     //}
                 }
 
