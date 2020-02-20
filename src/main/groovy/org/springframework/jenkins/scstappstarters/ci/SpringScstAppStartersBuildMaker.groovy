@@ -89,10 +89,12 @@ class SpringScstAppStartersBuildMaker implements JdkConfig, TestPublisher,
                     }
                 }
                 else {
-                    maven {
+                    //maven {
                         //mavenInstallation(maven35())
                         if (docsBuild) {
-                            goals('clean install -U -Pspring')
+                            maven {
+                                goals('clean install -U -Pspring')
+                            }
                         }
                         else if (appsBuild) {
                             shell("""set -e
@@ -108,9 +110,11 @@ class SpringScstAppStartersBuildMaker implements JdkConfig, TestPublisher,
                             //goals('clean deploy -U -Pspring')
                         }
                         else {
-                            goals('clean deploy -U -Pspring')
+                            maven {
+                                goals('clean deploy -U -Pspring')
+                            }
                         }
-                    }
+                    //}
                 }
 
                 if (appsBuild) {
