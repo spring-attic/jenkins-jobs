@@ -111,6 +111,7 @@ trait SpringScstAppStarterJobs extends BuildAndDeploy {
         if (isRelease && releaseType != null && releaseType.equals("milestone")) {
             return """
                 #!/bin/bash -x
+                cd ${cdToApps}
                 rm -rf apps
 
                 lines=\$(find . -type f -name pom.xml | xargs grep SNAPSHOT | wc -l)
