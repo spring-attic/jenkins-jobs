@@ -10,9 +10,9 @@ class AllScstAppStarterJobs {
 
     //Removed cassandra and gpfdist from Darwin builds
 
-    public static final Map<String, String> PHASE1_JOBS = ['jdbc-source':'source/jdbc-source-apps', 'http-source':'source/http-source-apps',
-                                                           'splitter-processor':'processor/splitter-processor-apps', 'rabbit-sink':'sink/rabbit-sink-apps',
-                                                           'time-source':'source/time-source-apps', 'log-sink':'sink/log-sink-apps']
+    public static final Map<String, String> PHASE1_JOBS = ['jdbc-source':'source-apps-generator/jdbc-source-apps-generator', 'http-source':'source-apps-generator/http-source-apps-generator',
+                                                           'splitter-processor':'processor-apps-generator/splitter-processor-apps-generator', 'rabbit-sink':'sink-apps-generator/rabbit-sink-apps-generator',
+                                                           'time-source':'source-apps-generator/time-source-apps-generator', 'log-sink':'sink-apps-generator/log-sink-apps-generator']
 
 //    public static final List<String> PHASE2_JOBS = ['loggregator', 'load-generator', 'mail',
 //                                                    'pmml', 'tasklaunchrequest-transform', 'triggertask', 'transform', 'websocket', 'http']

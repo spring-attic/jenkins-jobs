@@ -73,27 +73,50 @@ class SpringScstAppStartersBuildMaker implements JdkConfig, TestPublisher,
             }
 
             steps {
-                if (!appsBuild) {
+
+                if (appsBuild) {
+                    shell(removeAppsDirectory())
+                }
+                if (isRelease) {
+                    if (docsBuild) {
+                        shell(cleanAndInstall(isRelease, releaseType))
+                    }
+                    else if (appsBuild) {
+                        shell(cleanAndDeployWithGenerateApps(isRelease, releaseType))
+                    }
+                    else {
+                        shell(cleanAndDeploy(isRelease, releaseType))
+                    }
+                }
+                else {
                     maven {
                         mavenInstallation(maven35())
-                        goals('clean deploy -U -Pspring')
+                        if (docsBuild) {
+                            goals('clean install -U -Pspring')
+                        }
+                        else if (appsBuild) {
+                            goals('clean deploy -U -Pspring')
+                        }
+                        else {
+                            goals('clean deploy -U -Pspring')
+                        }
                     }
                 }
 
                 if (appsBuild) {
                     if (isRelease && releaseType != null && !releaseType.equals("milestone")) {
-//                        shell("""set -e
-//                        #!/bin/bash -x
-//                        export MAVEN_PATH=${mavenBin()}
-//                        ${setupGitCredentials()}
-//                        echo "Building apps"
-//                        cd apps
-//                        set +x
-//                        ../mvnw clean deploy -Pspring -Dgpg.secretKeyring="\$${gpgSecRing()}" -Dgpg.publicKeyring="\$${
-//                            gpgPubRing()}" -Dgpg.passphrase="\$${gpgPassphrase()}" -DSONATYPE_USER="\$${sonatypeUser()}" -DSONATYPE_PASSWORD="\$${sonatypePassword()}" -Pcentral -U
-//                        set -x
-//                        ${cleanGitCredentials()}
-//                        """)
+                        shell("""set -e
+                        #!/bin/bash -x
+                        export MAVEN_PATH=${mavenBin()}
+                        ${setupGitCredentials()}
+                        echo "Building apps"
+                        cd apps
+                        set +x
+                        ./mvnw clean deploy -Pspring -Dgpg.secretKeyring="\$${gpgSecRing()}" -Dgpg.publicKeyring="\$${
+                            gpgPubRing()}" -Dgpg.passphrase="\$${gpgPassphrase()}" -DSONATYPE_USER="\$${sonatypeUser()}" -DSONATYPE_PASSWORD="\$${sonatypePassword()}" -Pcentral -U
+                        set -x
+                        ${cleanGitCredentials()}
+                        """)
                     }
                     else {
                         shell("""set -e
@@ -101,23 +124,8 @@ class SpringScstAppStartersBuildMaker implements JdkConfig, TestPublisher,
                         export MAVEN_PATH=${mavenBin()}
                         ${setupGitCredentials()}
                         echo "Building apps"
-                        cd ${cdToApps}
-                        if [ -e docker-compose.sh ]
-                        then
-                            ./docker-compose.sh
-                        else
-                            echo "skipping docker step"
-                        fi
-                        rm -rf apps
-                        ./mvnw clean package -U
-                        if [ -e docker-compose-stop.sh ]
-                        then
-                            ./docker-compose-stop.sh
-                        else
-                            echo "skipping docker step"
-                        fi
                         cd apps
-                        ../mvnw clean deploy -U
+                        ./mvnw clean deploy -U
                         ${cleanGitCredentials()}
                         """)
                     }
@@ -128,13 +136,10 @@ class SpringScstAppStartersBuildMaker implements JdkConfig, TestPublisher,
 					export MAVEN_PATH=${mavenBin()}
 					${setupGitCredentials()}
 					echo "Pushing to Docker Hub"
-                    cd ${cdToApps}
                     cd apps
                     set +x
-                    #../mvnw -U --batch-mode clean package docker:build docker:push -DskipTests -Ddocker.username="\$${dockerHubUserNameEnvVar()}" -Ddocker.password="\$${dockerHubPasswordEnvVar()}"
-                    ../mvnw -U clean package jib:dockerBuild -DskipTests -Djib.to.auth.username="\$${dockerHubUserNameEnvVar()}" -Djib.to.auth.password="\$${dockerHubPasswordEnvVar()}"
+                    ./mvnw -U --batch-mode clean package docker:build docker:push -DskipTests -Ddocker.username="\$${dockerHubUserNameEnvVar()}" -Ddocker.password="\$${dockerHubPasswordEnvVar()}"
 					set -x
-
 					${cleanGitCredentials()}
 					""")
                 }
@@ -143,13 +148,15 @@ class SpringScstAppStartersBuildMaker implements JdkConfig, TestPublisher,
 
                 if (docsBuild) {
                     artifactoryMavenBuild(it as Node) {
+//                        mavenVersion(maven33())
+//                        if (releaseType != null && releaseType.equals("milestone")) {
+//                            goals('clean install -U -Pfull -Pspring -Pmilestone')
+//                        }
+//                        else {
+//                            goals('clean install -U -Pfull -Pspring')
+//                        }
                         mavenVersion(maven35())
-                        if (releaseType != null && releaseType.equals("milestone")) {
-                            goals('clean install -U -Pfull -Pspring -Pmilestone')
-                        }
-                        else {
-                            goals('clean install -U -Pfull -Pspring')
-                        }
+                        goals('clean install -U -Pfull -Pspring')
                     }
                     artifactoryMaven3Configurator(it as Node) {
                         if (isRelease && releaseType != null && releaseType.equals("milestone")) {
@@ -162,6 +169,99 @@ class SpringScstAppStartersBuildMaker implements JdkConfig, TestPublisher,
                 }
 
             }
+
+
+
+
+//                if (!appsBuild) {
+//                    maven {
+//                        mavenInstallation(maven35())
+//                        goals('clean deploy -U -Pspring')
+//                    }
+//                }
+//
+//                if (appsBuild) {
+//                    if (isRelease && releaseType != null && !releaseType.equals("milestone")) {
+////                        shell("""set -e
+////                        #!/bin/bash -x
+////                        export MAVEN_PATH=${mavenBin()}
+////                        ${setupGitCredentials()}
+////                        echo "Building apps"
+////                        cd apps
+////                        set +x
+////                        ../mvnw clean deploy -Pspring -Dgpg.secretKeyring="\$${gpgSecRing()}" -Dgpg.publicKeyring="\$${
+////                            gpgPubRing()}" -Dgpg.passphrase="\$${gpgPassphrase()}" -DSONATYPE_USER="\$${sonatypeUser()}" -DSONATYPE_PASSWORD="\$${sonatypePassword()}" -Pcentral -U
+////                        set -x
+////                        ${cleanGitCredentials()}
+////                        """)
+//                    }
+//                    else {
+//                        shell("""set -e
+//                        #!/bin/bash -x
+//                        export MAVEN_PATH=${mavenBin()}
+//                        ${setupGitCredentials()}
+//                        echo "Building apps"
+//                        cd ${cdToApps}
+//                        if [ -e docker-compose.sh ]
+//                        then
+//                            ./docker-compose.sh
+//                        else
+//                            echo "skipping docker step"
+//                        fi
+//                        rm -rf apps
+//                        ./mvnw clean package -U
+//                        if [ -e docker-compose-stop.sh ]
+//                        then
+//                            ./docker-compose-stop.sh
+//                        else
+//                            echo "skipping docker step"
+//                        fi
+//                        cd apps
+//                        ../mvnw clean deploy -U
+//                        ${cleanGitCredentials()}
+//                        """)
+//                    }
+//                }
+//                if (dockerHubPush) {
+//                    shell("""set -e
+//                    #!/bin/bash -x
+//					export MAVEN_PATH=${mavenBin()}
+//					${setupGitCredentials()}
+//					echo "Pushing to Docker Hub"
+//                    cd ${cdToApps}
+//                    cd apps
+//                    set +x
+//                    #../mvnw -U --batch-mode clean package docker:build docker:push -DskipTests -Ddocker.username="\$${dockerHubUserNameEnvVar()}" -Ddocker.password="\$${dockerHubPasswordEnvVar()}"
+//                    ../mvnw -U clean package jib:dockerBuild -DskipTests -Djib.to.auth.username="\$${dockerHubUserNameEnvVar()}" -Djib.to.auth.password="\$${dockerHubPasswordEnvVar()}"
+//					set -x
+//
+//					${cleanGitCredentials()}
+//					""")
+//                }
+//            }
+//            configure {
+//
+//                if (docsBuild) {
+//                    artifactoryMavenBuild(it as Node) {
+//                        mavenVersion(maven35())
+//                        if (releaseType != null && releaseType.equals("milestone")) {
+//                            goals('clean install -U -Pfull -Pspring -Pmilestone')
+//                        }
+//                        else {
+//                            goals('clean install -U -Pfull -Pspring')
+//                        }
+//                    }
+//                    artifactoryMaven3Configurator(it as Node) {
+//                        if (isRelease && releaseType != null && releaseType.equals("milestone")) {
+//                            deployReleaseRepository("libs-milestone-local")
+//                        }
+//                        else if (isRelease) {
+//                            deployReleaseRepository("libs-release-local")
+//                        }
+//                    }
+//                }
+//
+//            }
 
             publishers {
                 //mailer('scdf-ci@pivotal.io', true, true)
