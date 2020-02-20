@@ -89,17 +89,19 @@ trait SpringScstAppStarterJobs extends BuildAndDeploy {
 		}
 	}
 
-	String cleanAndDeployWithGenerateApps(boolean isRelease, String releaseType) {
+	//./mvnw clean deploy -Pspring -Dgpg.secretKeyring="\$${gpgSecRing()}" -Dgpg.publicKeyring="\$${
+	//                gpgPubRing()}" -Dgpg.passphrase="\$${gpgPassphrase()}" -DSONATYPE_USER="\$${sonatypeUser()}" -DSONATYPE_PASSWORD="\$${sonatypePassword()}" -Pcentral -U
+	String cleanAndDeployWithGenerateApps(boolean isRelease, String releaseType, String cdToApps) {
 		if (isRelease && releaseType != null && !releaseType.equals("milestone")) {
             return """
                     #!/bin/bash -x
+                    cd ${cdToApps}
                     rm -rf apps
 
                     lines=\$(find . -type f -name pom.xml | xargs egrep "SNAPSHOT|M[0-9]|RC[0-9]" | grep -v regex | wc -l)
                     if [ \$lines -eq 0 ]; then
                         set +x
-                        ./mvnw clean deploy -Pspring -Dgpg.secretKeyring="\$${gpgSecRing()}" -Dgpg.publicKeyring="\$${
-                gpgPubRing()}" -Dgpg.passphrase="\$${gpgPassphrase()}" -DSONATYPE_USER="\$${sonatypeUser()}" -DSONATYPE_PASSWORD="\$${sonatypePassword()}" -Pcentral -U
+                        ./mvnw clean package -U
                         set -x
                     else
                         echo "Non release versions found. Aborting build"
@@ -113,7 +115,7 @@ trait SpringScstAppStarterJobs extends BuildAndDeploy {
 
                 lines=\$(find . -type f -name pom.xml | xargs grep SNAPSHOT | wc -l)
                 if [ \$lines -eq 0 ]; then
-                    ./mvnw clean deploy -U -Pspring
+                    ./mvnw clean package -U -Pspring
                 else
                     echo "Snapshots found. Aborting the release build."
                 fi

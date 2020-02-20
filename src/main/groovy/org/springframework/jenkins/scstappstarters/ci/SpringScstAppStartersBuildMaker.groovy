@@ -74,15 +74,15 @@ class SpringScstAppStartersBuildMaker implements JdkConfig, TestPublisher,
 
             steps {
 
-                if (appsBuild) {
-                    shell(removeAppsDirectory())
-                }
+//                if (appsBuild) {
+//                    shell(removeAppsDirectory())
+//                }
                 if (isRelease) {
                     if (docsBuild) {
                         shell(cleanAndInstall(isRelease, releaseType))
                     }
                     else if (appsBuild) {
-                        shell(cleanAndDeployWithGenerateApps(isRelease, releaseType))
+                        shell(cleanAndDeployWithGenerateApps(isRelease, releaseType, cdToApps))
                     }
                     else {
                         shell(cleanAndDeploy(isRelease, releaseType))
@@ -95,7 +95,16 @@ class SpringScstAppStartersBuildMaker implements JdkConfig, TestPublisher,
                             goals('clean install -U -Pspring')
                         }
                         else if (appsBuild) {
-                            goals('clean deploy -U -Pspring')
+                            shell("""set -e
+                            #!/bin/bash -x
+                            export MAVEN_PATH=${mavenBin()}
+                            ${setupGitCredentials()}
+                            echo "Building app generator"
+                            cd ${cdToApps}
+                            ./mvnw clean package -U
+                            ${cleanGitCredentials()}
+                            """)
+                            //goals('clean deploy -U -Pspring')
                         }
                         else {
                             goals('clean deploy -U -Pspring')
