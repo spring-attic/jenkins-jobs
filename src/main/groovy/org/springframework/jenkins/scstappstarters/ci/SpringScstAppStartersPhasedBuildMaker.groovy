@@ -68,7 +68,7 @@ class SpringScstAppStartersPhasedBuildMaker implements SpringScstAppStarterJobs 
 
     void buildAllRelatedJobs(boolean isRelease, String releaseType, String branchToBuild) {
         if (isRelease) {
-            new SpringScstAppStartersBuildMaker(dsl, "spring-cloud-stream-app-starters", "core", branchToBuild)
+            new SpringScstAppStartersBuildMaker(dsl, "spring-cloud-stream-app-starters", "core", "core", branchToBuild)
                     .deploy(false, false, false, false, false, isRelease, releaseType)
 //
 //            if (branchToBuild.equals("1.3.x")) {
