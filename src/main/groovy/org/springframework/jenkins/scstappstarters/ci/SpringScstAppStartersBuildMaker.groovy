@@ -124,6 +124,7 @@ class SpringScstAppStartersBuildMaker implements JdkConfig, TestPublisher,
                         export MAVEN_PATH=${mavenBin()}
                         ${setupGitCredentials()}
                         echo "Building apps"
+                        cd ${cdToApps}
                         cd apps
                         set +x
                         ./mvnw clean deploy -Pspring -Dgpg.secretKeyring="\$${gpgSecRing()}" -Dgpg.publicKeyring="\$${
@@ -150,6 +151,7 @@ class SpringScstAppStartersBuildMaker implements JdkConfig, TestPublisher,
 					export MAVEN_PATH=${mavenBin()}
 					${setupGitCredentials()}
 					echo "Pushing to Docker Hub"
+                    cd ${cdToApps}
                     cd apps
                     set +x
                     ./mvnw -U --batch-mode clean package docker:build docker:push -DskipTests -Ddocker.username="\$${dockerHubUserNameEnvVar()}" -Ddocker.password="\$${dockerHubPasswordEnvVar()}"
