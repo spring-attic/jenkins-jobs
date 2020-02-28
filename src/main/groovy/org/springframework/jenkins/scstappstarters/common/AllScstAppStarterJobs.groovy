@@ -12,7 +12,8 @@ class AllScstAppStarterJobs {
 
     public static final Map<String, String> PHASE1_JOBS = ['jdbc-source':'source-apps-generator/jdbc-source-apps-generator', 'http-source':'source-apps-generator/http-source-apps-generator',
                                                            'splitter-processor':'processor-apps-generator/splitter-processor-apps-generator', 'rabbit-sink':'sink-apps-generator/rabbit-sink-apps-generator',
-                                                           'time-source':'source-apps-generator/time-source-apps-generator', 'log-sink':'sink-apps-generator/log-sink-apps-generator']
+                                                           'time-source':'source-apps-generator/time-source-apps-generator', 'log-sink':'sink-apps-generator/log-sink-apps-generator',
+                                                           'cassandra-sink':'sink-apps-generator/cassandra-sink-apps-generator', 'mongodb-sink':'sink-apps-generator/mongodb-sink-apps-generator']
 
 //    public static final List<String> PHASE2_JOBS = ['loggregator', 'load-generator', 'mail',
 //                                                    'pmml', 'tasklaunchrequest-transform', 'triggertask', 'transform', 'websocket', 'http']
@@ -25,7 +26,7 @@ class AllScstAppStarterJobs {
 //
 //    public static final List<String> PHASE5_JOBS = ['aws-s3', 'sftp', 'tensorflow', 'mongodb', 'hdfs', 'jdbc', 'python', 'analytics']
 
-    public static final List<String> PHASE1_KEYS = ['jdbc-source', 'http-source', 'splitter-processor', 'rabbit-sink', 'time-source', 'log-sink']
+    public static final List<String> PHASE1_KEYS = ['jdbc-source', 'http-source', 'splitter-processor', 'rabbit-sink', 'time-source', 'log-sink', 'cassandra-sink', 'mongodb-sink']
     public static final List<List<String>> ALL_JOBS = [PHASE1_KEYS]
 //            PHASE1_JOBS + PHASE2_JOBS +
 //                    PHASE3_JOBS + PHASE4_JOBS +
