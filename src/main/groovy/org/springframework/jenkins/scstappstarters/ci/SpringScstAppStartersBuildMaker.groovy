@@ -91,7 +91,9 @@ class SpringScstAppStartersBuildMaker implements JdkConfig, TestPublisher,
 
             steps {
                 if (appsBuild) {
-                    shell(removeAppsDirectory())
+                    if (!this.project.equals("tasklauncher-data-flow")) {
+                        shell(removeAppsDirectory())
+                    }
                 }
                 if (isRelease) {
                     if (docsBuild) {
