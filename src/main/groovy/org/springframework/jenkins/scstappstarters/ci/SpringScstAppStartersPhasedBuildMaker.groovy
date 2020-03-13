@@ -78,7 +78,7 @@ class SpringScstAppStartersPhasedBuildMaker implements SpringScstAppStarterJobs 
                     }
                 }
                 else if (branchToBuild.equals("2.1.x")) {
-                    (AllScstAppStarterJobs.DARWIN_PHASES).each { List<String> ph ->
+                    (AllScstAppStarterJobs.PHASES).each { List<String> ph ->
                         phase("app-starters-ci-group-${counter}", 'COMPLETED') {
                             ph.each {
                                 String projectName ->
@@ -152,7 +152,8 @@ class SpringScstAppStartersPhasedBuildMaker implements SpringScstAppStarterJobs 
                             .deploy(true, true,
                             true, false, false, isRelease, releaseType)
                 }
-            } else if (branchToBuild.equals("2.0.x")) {
+            }
+            else if (branchToBuild.equals("2.0.x")) {
                 AllScstAppStarterJobs.DARWIN_ALL_JOBS.each {
                     new SpringScstAppStartersBuildMaker(dsl, "spring-cloud-stream-app-starters", it, branchToBuild)
                             .deploy(true, true,
