@@ -89,8 +89,6 @@ trait SpringScstAppStarterJobs extends BuildAndDeploy {
 		}
 	}
 
-	//./mvnw clean deploy -Pspring -Dgpg.secretKeyring="\$${gpgSecRing()}" -Dgpg.publicKeyring="\$${
-	//                gpgPubRing()}" -Dgpg.passphrase="\$${gpgPassphrase()}" -DSONATYPE_USER="\$${sonatypeUser()}" -DSONATYPE_PASSWORD="\$${sonatypePassword()}" -Pcentral -U
 	String cleanAndDeployWithGenerateApps(boolean isRelease, String releaseType, String cdToApps) {
 		if (isRelease && releaseType != null && !releaseType.equals("milestone")) {
             return """
@@ -122,13 +120,6 @@ trait SpringScstAppStarterJobs extends BuildAndDeploy {
                 fi
            """
         }
-	}
-
-	String removeAppsDirectory() {
-		return """
-					#!/bin/bash -x
-					rm -rf apps
-			   """
 	}
 
 	String cleanAndInstall(boolean isRelease, String releaseType) {

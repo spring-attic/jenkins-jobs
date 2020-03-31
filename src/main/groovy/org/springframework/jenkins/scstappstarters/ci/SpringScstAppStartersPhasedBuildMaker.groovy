@@ -70,30 +70,10 @@ class SpringScstAppStartersPhasedBuildMaker implements SpringScstAppStarterJobs 
         if (isRelease) {
             new SpringScstAppStartersBuildMaker(dsl, "spring-cloud-stream-app-starters", "core", "core", branchToBuild)
                     .deploy(false, false, false, false, false, isRelease, releaseType)
-//
-//            if (branchToBuild.equals("1.3.x")) {
-//                AllScstAppStarterJobs.CELSIUS_ALL_JOBS.each {
-//                    new SpringScstAppStartersBuildMaker(dsl, "spring-cloud-stream-app-starters", it, branchToBuild)
-//                            .deploy(true, true,
-//                            true, false, false, isRelease, releaseType)
-//                }
-//            } else if (branchToBuild.equals("2.0.x")) {
-//                AllScstAppStarterJobs.DARWIN_ALL_JOBS.each {
-//                    new SpringScstAppStartersBuildMaker(dsl, "spring-cloud-stream-app-starters", it, branchToBuild)
-//                            .deploy(true, true,
-//                            true, false, false, isRelease, releaseType)
-//                }
-//            } else { //master branch
             AllScstAppStarterJobs.PHASE1_JOBS.each { k,v ->
                 new SpringScstAppStartersBuildMaker(dsl, "spring-cloud-stream-app-starters", "stream-applications", "${k}", branchToBuild).deploy(true, true,
                         true, false, false, isRelease, releaseType, "${v}")
             }
-//            }
-//            if (branchToBuild.equals("1.3.x")) {
-//                branchToBuild = "Celsius"
-//            } else if (branchToBuild.equals("2.0.x")) {
-//                branchToBuild = "Darwin"
-//            }
             new SpringScstAppStartersBuildMaker(dsl, "spring-cloud-stream-app-starters", "app-starters-release", "app-starters-release", branchToBuild)
                     .deploy(false, false, false, false, true, isRelease, releaseType)
         }
@@ -101,12 +81,10 @@ class SpringScstAppStartersPhasedBuildMaker implements SpringScstAppStarterJobs 
             new SpringScstAppStartersBuildMaker(dsl, "spring-cloud-stream-app-starters", "core", "core", branchToBuild)
                     .deploy(false, false, false, true, false, isRelease, releaseType)
 
-            // master branch
             AllScstAppStarterJobs.PHASE1_JOBS.each { k,v ->
                 new SpringScstAppStartersBuildMaker(dsl, "spring-cloud-stream-app-starters", "stream-applications", "${k}", branchToBuild).deploy(true, true,
                         true, true, false, isRelease, releaseType, "${v}")
             }
-
             new SpringScstAppStartersBuildMaker(dsl, "spring-cloud-stream-app-starters", "app-starters-release", "app-starters-release", branchToBuild)
                     .deploy(false, false, false, true, true, isRelease, releaseType)
         }
