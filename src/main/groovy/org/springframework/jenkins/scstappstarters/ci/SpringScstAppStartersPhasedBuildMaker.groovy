@@ -70,7 +70,7 @@ class SpringScstAppStartersPhasedBuildMaker implements SpringScstAppStarterJobs 
         if (isRelease) {
             new SpringScstAppStartersBuildMaker(dsl, "spring-cloud-stream-app-starters", "core", "core", branchToBuild)
                     .deploy(false, false, false, false, false, isRelease, releaseType)
-            AllScstAppStarterJobs.PHASE1_JOBS.each { k,v ->
+            AllScstAppStarterJobs.PHASED_JOBS.each { k,v ->
                 new SpringScstAppStartersBuildMaker(dsl, "spring-cloud-stream-app-starters", "stream-applications", "${k}", branchToBuild).deploy(true, true,
                         true, false, false, isRelease, releaseType, "${v}")
             }
@@ -81,7 +81,7 @@ class SpringScstAppStartersPhasedBuildMaker implements SpringScstAppStarterJobs 
             new SpringScstAppStartersBuildMaker(dsl, "spring-cloud-stream-app-starters", "core", "core", branchToBuild)
                     .deploy(false, false, false, true, false, isRelease, releaseType)
 
-            AllScstAppStarterJobs.PHASE1_JOBS.each { k,v ->
+            AllScstAppStarterJobs.PHASED_JOBS.each { k,v ->
                 new SpringScstAppStartersBuildMaker(dsl, "spring-cloud-stream-app-starters", "stream-applications", "${k}", branchToBuild).deploy(true, true,
                         true, true, false, isRelease, releaseType, "${v}")
             }
