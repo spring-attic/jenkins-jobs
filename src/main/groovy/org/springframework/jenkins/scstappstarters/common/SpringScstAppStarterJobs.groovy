@@ -99,7 +99,13 @@ trait SpringScstAppStarterJobs extends BuildAndDeploy {
                     lines=\$(find . -type f -name pom.xml | xargs egrep "SNAPSHOT|M[0-9]|RC[0-9]" | grep -v regex | wc -l)
                     if [ \$lines -eq 0 ]; then
                         set +x
-                        ./mvnw clean package -U
+						if [ -d "src/main/java" ]
+						then
+							echo "Source folder found."
+							./mvnw clean deploy -U
+						else
+							./mvnw clean package -U
+						fi
                         set -x
                     else
                         echo "Non release versions found. Aborting build"

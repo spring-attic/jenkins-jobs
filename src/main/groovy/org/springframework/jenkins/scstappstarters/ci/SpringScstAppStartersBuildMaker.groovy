@@ -99,7 +99,13 @@ class SpringScstAppStartersBuildMaker implements JdkConfig, TestPublisher,
                         echo "Building app generator"
                         cd ${cdToApps}
                         rm -rf apps
-                        ./mvnw clean package -U
+                        if [ -d "src/main/java" ]
+                        then
+                            echo "Source folder found."
+                            ./mvnw clean deploy -U
+                        else
+                            ./mvnw clean package -U
+                        fi
                         ${cleanGitCredentials()}
                         """)
                     }
