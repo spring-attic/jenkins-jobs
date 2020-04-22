@@ -14,7 +14,7 @@ class AllScstAppStarterJobs {
                                                            'cassandra-sink':'sink/cassandra-sink', 'mongodb-sink':'sink/mongodb-sink',
                                                            'mongodb-source':'source/mongodb-source', 'filter-processor':'processor/filter-processor',
                                                            'transform-processor':'processor/transform-processor', 'jdbc-sink':'sink/jdbc-sink',
-                                                           'counter-sink':'sink/counter-sink', 'bridge-processor':'sink/bridge-processor']
+                                                           'counter-sink':'sink/counter-sink', 'bridge-processor':'processor/bridge-processor']
 
     public static final List<String> PHASE1_KEYS = ['jdbc-source', 'http-source', 'splitter-processor', 'rabbit-sink', 'time-source', 'log-sink', 'cassandra-sink',
                                                     'mongodb-sink', 'mongodb-source', 'filter-processor']
