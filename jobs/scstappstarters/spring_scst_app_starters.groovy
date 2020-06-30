@@ -17,4 +17,4 @@ new SpringScstAppStartersPhasedBuildMaker(dsl).build(false, "", "1.3.x")
 new SpringScstAppStartersPhasedBuildMaker(dsl).build(false, "", "2.0.x")
 
 // 2.1.x CI
-new SpringScstAppStartersPhasedBuildMaker(dsl).build(true, "ga", "2.1.x")
+new SpringScstAppStartersPhasedBuildMaker(dsl).build(false, "", "2.1.x")
