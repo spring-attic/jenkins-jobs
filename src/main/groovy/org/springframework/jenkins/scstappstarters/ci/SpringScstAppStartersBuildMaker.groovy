@@ -19,7 +19,7 @@ class SpringScstAppStartersBuildMaker implements JdkConfig, TestPublisher,
     final String organization
     final String project
 
-    String branchToBuild = "master"
+    String branchToBuild = "main"
 
     String jdkVersion = jdk8()
 

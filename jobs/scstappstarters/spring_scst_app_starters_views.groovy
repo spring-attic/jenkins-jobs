@@ -18,7 +18,7 @@ dsl.nestedView('SpringScstAppStarters') {
 	views {
 		listView('Master-CI') {
 			jobs {
-				regex('spring-scst-app-starters.*master-ci')
+				regex('spring-scst-app-starters.*main-ci')
 			}
 			columns defaultColumns()
 		}

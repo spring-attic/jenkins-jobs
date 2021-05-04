@@ -15,7 +15,7 @@ class SpringScstAppStartersPhasedBuildMaker implements SpringScstAppStarterJobs 
         this.dsl = dsl
     }
 
-    void build(boolean isRelease, String releaseType, String branchToBuild = "master") {
+    void build(boolean isRelease, String releaseType, String branchToBuild = "main") {
         buildAllRelatedJobs(isRelease, releaseType, branchToBuild)
         dsl.multiJob("spring-scst-app-starter-builds" + "-" + branchToBuild) {
             steps {
@@ -83,7 +83,7 @@ class SpringScstAppStartersPhasedBuildMaker implements SpringScstAppStarterJobs 
                             ph.each {
                                 String projectName ->
                                     String prefixedProjectName = prefixJob(projectName)
-                                    phaseJob("${prefixedProjectName}-master-ci".toString()) {
+                                    phaseJob("${prefixedProjectName}-main-ci".toString()) {
                                         currentJobParameters()
                                     }
                             }
@@ -162,11 +162,11 @@ class SpringScstAppStartersPhasedBuildMaker implements SpringScstAppStarterJobs 
             }
             else if (branchToBuild.equals("2.1.x")) {
                 AllScstAppStarterJobs.ALL_JOBS.each {
-                    new SpringScstAppStartersBuildMaker(dsl, "spring-cloud-stream-app-starters", it, "master").deploy(true, true,
+                    new SpringScstAppStartersBuildMaker(dsl, "spring-cloud-stream-app-starters", it, "main").deploy(true, true,
                             true, false, false, isRelease, releaseType)
                 }
             }
-            else { //master branch
+            else { //main branch
                 AllScstAppStarterJobs.ALL_JOBS.each {
                     new SpringScstAppStartersBuildMaker(dsl, "spring-cloud-stream-app-starters", it, branchToBuild)
                             .deploy(true, true,
@@ -198,11 +198,11 @@ class SpringScstAppStartersPhasedBuildMaker implements SpringScstAppStarterJobs 
             }
             else if (branchToBuild.equals("2.1.x")) {
                 AllScstAppStarterJobs.ALL_JOBS.each {
-                    new SpringScstAppStartersBuildMaker(dsl, "spring-cloud-stream-app-starters", it, "master").deploy(true, true,
+                    new SpringScstAppStartersBuildMaker(dsl, "spring-cloud-stream-app-starters", it, "main").deploy(true, true,
                             true, true, false, isRelease, releaseType)
                 }
             }
-            else { // master branch
+            else { // main branch
                 AllScstAppStarterJobs.ALL_JOBS.each {
                     new SpringScstAppStartersBuildMaker(dsl, "spring-cloud-stream-app-starters", it, branchToBuild).deploy(true, true,
                             true, true, false, isRelease, releaseType)
